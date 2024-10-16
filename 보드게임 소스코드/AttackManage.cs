@@ -29,7 +29,7 @@ public class AttackManage : MonoBehaviour
     public void Attack()
     {
         // 거리가 3 이하일 때만 공격
-        if (minDistance <= 3)
+        if (CalculateDistance() <= 3)
         {
             int damage = Math.Max(0, p.ps.Atk - p.OtherPlayer.ps.Def);
             p.OtherPlayer.ps.HP -= damage;
@@ -39,7 +39,7 @@ public class AttackManage : MonoBehaviour
         }
         
     }
-    public void CalculateDistance()
+    public int CalculateDistance()
     {
         int currentIndex = p.currentPositionIndex;
         int otherIndex = p.OtherPlayer.currentPositionIndex;
@@ -49,12 +49,13 @@ public class AttackManage : MonoBehaviour
 
         // 두 방향 중 더 짧은 거리를 선택
         minDistance = Math.Min(forwardDistance, backwardDistance);
+        return minDistance;
     }
     private void UpdateButtonState()
     {
         if (CanAttack == true && townUI.isUIOpen == false)
         {
-            if (minDistance <= 3)
+            if (CalculateDistance() <= 3)
             {
                 switch(creator.playerHomes[creator.playerHomeIndex].playerMode)
                 {
